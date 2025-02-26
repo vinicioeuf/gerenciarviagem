@@ -2,7 +2,6 @@ package com.gerebia.gerenciarviagem.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-
 @Entity
 @Table(name = "viagem")
 public class Viagens {
@@ -22,7 +21,7 @@ public class Viagens {
 
     @ManyToOne
     @JoinColumn(name = "motorista_id", nullable = false)
-    private Motoristas motorista;
+    private Usuarios motorista;
 
     @ManyToOne
     @JoinColumn(name = "carro_id", nullable = false)
@@ -60,12 +59,17 @@ public class Viagens {
         this.valorPassagem = valorPassagem;
     }
 
-    public Motoristas getMotorista() {
+    public Usuarios getMotorista() {
         return motorista;
     }
 
-    public void setMotorista(Motoristas motorista) {
-        this.motorista = motorista;
+    public void setMotorista(Usuarios motorista) {
+        if (motorista != null && motorista.getMotorista() != null && motorista.getMotorista() == 1) {
+            System.out.println("MOTORISTA OK: " + motorista.getNome());
+            this.motorista = motorista;
+        } else {
+            throw new IllegalArgumentException("Usuário não é um motorista válido!");
+        }
     }
 
     public Carros getCarro() {
