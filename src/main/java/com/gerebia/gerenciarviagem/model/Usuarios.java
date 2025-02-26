@@ -3,7 +3,8 @@ package com.gerebia.gerenciarviagem.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="usuarios")
+@Inheritance(strategy = InheritanceType.JOINED) // Estratégia de herança JOINED
+@Table(name = "usuarios")
 public class Usuarios {
 
     @Id
@@ -11,32 +12,33 @@ public class Usuarios {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "nome", length = 220, nullable = true)
+    @Column(name = "nome", length = 220, nullable = false)
     private String nome;
 
-    @Column(name = "email", length = 220, nullable = true)
+    @Column(name = "email", length = 220, nullable = false, unique = true)
     private String email;
 
-    @Column(name = "senha", columnDefinition = "TEXT", nullable = true)
+    @Column(name = "senha", columnDefinition = "TEXT", nullable = false)
     private String senha;
 
-    @Column(name = "tipo", length = 3, nullable = true)
-    private Integer tipo;
+    @ManyToOne
+    @JoinColumn(name = "tipo_id", nullable = false)
+    private TipoUsuarios tipo;
 
-    public String getSenha() {
-        return senha;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public int getTipo() {
-        return tipo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setTipo(int tipo) {
-        this.tipo = tipo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getEmail() {
@@ -47,18 +49,19 @@ public class Usuarios {
         this.email = email;
     }
 
-    public Integer getId() {
-        return id;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    public String getNome() {
-        return nome;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public TipoUsuarios getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoUsuarios tipo) {
+        this.tipo = tipo;
     }
 }
