@@ -24,12 +24,15 @@ public class UsuariosController {
     public List<Usuarios> listarUsuarios() {
         return (List<Usuarios>) iusuarios.findAll();
     }
-
+    
     @PostMapping
     public Usuarios cadastrarUsuario(@RequestBody Usuarios usuario) {
+        
         if (usuario.getTipo() != null && usuario.getTipo().getId() != null) {
+            
             Optional<TipoUsuarios> tipoOptional = iTipoUsuario.findById(usuario.getTipo().getId());
             if (tipoOptional.isPresent()) {
+                
                 usuario.setTipo(tipoOptional.get());
             } else {
                 throw new RuntimeException("Tipo de usuário inválido!");
@@ -38,8 +41,10 @@ public class UsuariosController {
             throw new RuntimeException("O tipo de usuário é obrigatório!");
         }
 
+        
         return iusuarios.save(usuario);
     }
+
 
     @PutMapping
     public Usuarios atualizarUsuario(@RequestBody Usuarios usuario) {

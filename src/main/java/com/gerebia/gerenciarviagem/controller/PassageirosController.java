@@ -1,13 +1,12 @@
 package com.gerebia.gerenciarviagem.controller;
 
-import com.gerebia.gerenciarviagem.DAO.IMotoristas;
+
 import com.gerebia.gerenciarviagem.DAO.IPassageiros;
-import com.gerebia.gerenciarviagem.DAO.IUsuarios;
 import com.gerebia.gerenciarviagem.DAO.ITipoUsuarios;
-import com.gerebia.gerenciarviagem.model.Motoristas;
 import com.gerebia.gerenciarviagem.model.Passageiros;
-import com.gerebia.gerenciarviagem.model.Usuarios;
 import com.gerebia.gerenciarviagem.model.TipoUsuarios;
+import com.gerebia.gerenciarviagem.model.Usuarios;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +19,22 @@ public class PassageirosController {
 
     @Autowired
     private IPassageiros ipassageiros;
-
+    @Autowired
+    private ITipoUsuarios iTipoUsuario;
     @GetMapping
     public List<Passageiros> listarTipoPassageiros() {
         return (List<Passageiros>) ipassageiros.findAll();
     }
 
     @PostMapping
-    public Passageiros cadastrarPass(@RequestBody Passageiros pass) {
-        if (pass.getTipo() != null && pass.getTipo().getId() != null) {
-            Optional<Passageiros> tipoOptional = ipassageiros.findById(pass.getTipo().getId());
+    public Passageiros cadastrarPass(@RequestBody Passageiros passageiro) {
+        // Verificar se o tipo de usuário foi passado corretamente
+        if (passageiro.getTipo() != null && passageiro.getTipo().getId() != null) {
+            // Procurar pelo tipo de usuário no banco
+            Optional<TipoUsuarios> tipoOptional = iTipoUsuario.findById(passageiro.getTipo().getId());
             if (tipoOptional.isPresent()) {
-                pass.setTipo(tipoOptional.get().getTipo());
+                // Se o tipo de usuário existir, associá-lo ao passageiro
+                passageiro.setTipo(tipoOptional.get());
             } else {
                 throw new RuntimeException("Tipo de usuário inválido!");
             }
@@ -39,6 +42,9 @@ public class PassageirosController {
             throw new RuntimeException("O tipo de usuário é obrigatório!");
         }
 
-        return ipassageiros.save(pass);
+        // Salvar o passageiro com o tipo de usuário associado
+        return ipassageiros.save(passageiro);
     }
+
+
 }
