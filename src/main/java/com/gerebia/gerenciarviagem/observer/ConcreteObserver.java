@@ -1,4 +1,4 @@
-package observer;
+package com.gerebia.gerenciarviagem.observer;
 
 public class ConcreteObserver implements Observer {
     private String nome;

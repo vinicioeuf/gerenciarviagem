@@ -1,8 +1,8 @@
-package service;
+package com.gerebia.gerenciarviagem.service;
 
 import org.springframework.stereotype.Service;
-import observer.ConcreteObserver;
-import observer.Subject;
+import com.gerebia.gerenciarviagem.observer.ConcreteObserver;
+import com.gerebia.gerenciarviagem.observer.Subject;
 
 @Service
 public class ViagemService {

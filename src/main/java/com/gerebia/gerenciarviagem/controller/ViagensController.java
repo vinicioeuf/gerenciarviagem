@@ -4,7 +4,7 @@ import com.gerebia.gerenciarviagem.DAO.IViagens;
 
 import com.gerebia.gerenciarviagem.model.Viagens;
 
-import service.ViagemService;
+import com.gerebia.gerenciarviagem.service.ViagemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

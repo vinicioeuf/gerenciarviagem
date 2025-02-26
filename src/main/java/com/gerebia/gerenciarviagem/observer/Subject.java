@@ -1,4 +1,4 @@
-package observer;
+package com.gerebia.gerenciarviagem.observer;
 
 import java.util.ArrayList;
 import java.util.List;
