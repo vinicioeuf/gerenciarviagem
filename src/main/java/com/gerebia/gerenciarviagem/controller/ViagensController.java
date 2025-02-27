@@ -29,7 +29,9 @@ public class ViagensController {
     
     @PostMapping
     public Viagens cadastrarViagem(@RequestBody Viagens viagem) {
-    	viagemService.notificarObservadores("Viagem de " + viagem.getOrigem() + " para " + viagem.getDestino());  
+    	viagemService.notificarObservadores("Viagem de " + viagem.getOrigem() + " para " + viagem.getDestino()); 
+    	
+        System.out.println("Estado notificado: " + viagem.getOrigem());
         return iViagens.save(viagem);
     }
 

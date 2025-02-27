@@ -28,12 +28,12 @@ public class MotoristasController {
     
     @PostMapping
     public Motoristas cadastrarMoto(@RequestBody Motoristas motorista) {
-        // Verificar se o tipo de usuário foi passado corretamente
+        
         if (motorista.getTipo() != null && motorista.getTipo().getId() != null) {
-            // Procurar pelo tipo de usuário no banco
+            
             Optional<TipoUsuarios> tipoOptional = iTipoUsuario.findById(motorista.getTipo().getId());
             if (tipoOptional.isPresent()) {
-                // Se o tipo de usuário existir, associá-lo ao passageiro
+                
                 motorista.setTipo(tipoOptional.get());
             } else {
                 throw new RuntimeException("Tipo de usuário inválido!");
@@ -42,7 +42,7 @@ public class MotoristasController {
             throw new RuntimeException("O tipo de usuário é obrigatório!");
         }
 
-        // Salvar o passageiro com o tipo de usuário associado
+        
         return iMotoristas.save(motorista);
     }
 }

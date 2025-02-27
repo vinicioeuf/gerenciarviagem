@@ -28,13 +28,7 @@ public class PassagensController {
         return iPassagens.save(carro);
     }
 
-    @PutMapping
-    public Passagens atualizarCarro(@RequestBody Passagens carro) {
-        if (carro.getId() == null) {
-            throw new RuntimeException("O ID do carro é obrigatório para atualização!");
-        }
-        return iPassagens.save(carro);
-    }
+   
 
     @DeleteMapping("/{id}")
     public Optional<Passagens> deletarCarro(@PathVariable Integer id) {
