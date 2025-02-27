@@ -17,12 +17,12 @@ public class Subject {
 
     public void setEstado(String estado) {
         this.estado = estado;
-        notifyObservers();  // Notifica todos os observers quando o estado muda
+        notifyObservers();  
     }
 
     private void notifyObservers() {
         for (Observer observer : observers) {
-            observer.update(estado);  // Chama o método update() para cada observer
+            observer.update(estado); 
         }
     }
 }

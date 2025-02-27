@@ -28,12 +28,12 @@ public class PassageirosController {
 
     @PostMapping
     public Passageiros cadastrarPass(@RequestBody Passageiros passageiro) {
-        // Verificar se o tipo de usuário foi passado corretamente
+        
         if (passageiro.getTipo() != null && passageiro.getTipo().getId() != null) {
-            // Procurar pelo tipo de usuário no banco
+            
             Optional<TipoUsuarios> tipoOptional = iTipoUsuario.findById(passageiro.getTipo().getId());
             if (tipoOptional.isPresent()) {
-                // Se o tipo de usuário existir, associá-lo ao passageiro
+                
                 passageiro.setTipo(tipoOptional.get());
             } else {
                 throw new RuntimeException("Tipo de usuário inválido!");
@@ -42,7 +42,7 @@ public class PassageirosController {
             throw new RuntimeException("O tipo de usuário é obrigatório!");
         }
 
-        // Salvar o passageiro com o tipo de usuário associado
+       
         return ipassageiros.save(passageiro);
     }
 
