@@ -21,12 +21,9 @@ public class Usuarios {
     @Column(name = "senha", columnDefinition = "TEXT", nullable = false)
     private String senha;
 
-    @Column(name = "passageiro", nullable = false)
-    private Integer passageiro; // 0 = false, 1 = true
-
-    @Column(name = "motorista", nullable = false)
-    private Integer motorista; // 0 = false, 1 = true
-
+    @ManyToOne
+    @JoinColumn(name = "tipo_id", nullable = false)
+    private TipoUsuarios tipo;
 
     public Integer getId() {
         return id;
@@ -60,20 +57,11 @@ public class Usuarios {
         this.senha = senha;
     }
 
-    public Integer getPassageiro() {
-        return passageiro;
+    public TipoUsuarios getTipo() {
+        return tipo;
     }
 
-    public void setPassageiro(Integer passageiro) {
-        this.passageiro = passageiro;
+    public void setTipo(TipoUsuarios tipo) {
+        this.tipo = tipo;
     }
-
-    public Integer getMotorista() {
-        return motorista;
-    }
-
-    public void setMotorista(Integer motorista) {
-        this.motorista = motorista;
-    }
-
 }

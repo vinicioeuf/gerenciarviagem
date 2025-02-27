@@ -1,9 +1,7 @@
 package com.gerebia.gerenciarviagem.DAO;
 
 import com.gerebia.gerenciarviagem.model.Usuarios;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public interface IUsuarios extends JpaRepository<Usuarios, Integer> {
+public interface IUsuarios extends CrudRepository<Usuarios, Integer> {
 }

@@ -1,11 +1,13 @@
 package com.gerebia.gerenciarviagem.controller;
 
 import com.gerebia.gerenciarviagem.DAO.IUsuarios;
+import com.gerebia.gerenciarviagem.DAO.ITipoUsuarios;
 import com.gerebia.gerenciarviagem.model.Usuarios;
+import com.gerebia.gerenciarviagem.model.TipoUsuarios;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -13,45 +15,59 @@ import java.util.Optional;
 public class UsuariosController {
 
     @Autowired
-    private IUsuarios usuarioRepository;
+    private IUsuarios iusuarios;
+
+    @Autowired
+    private ITipoUsuarios iTipoUsuario; // Adicionando DAO para TipoUsuario
 
     @GetMapping
-    public Iterable<Usuarios> listarUsuarios() {
-        return usuarioRepository.findAll();
+    public List<Usuarios> listarUsuarios() {
+        return (List<Usuarios>) iusuarios.findAll();
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuarios> buscarUsuario(@PathVariable Integer id) {
-        Optional<Usuarios> usuario = usuarioRepository.findById(id);
-        return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
+    
     @PostMapping
-    public Usuarios criarUsuario(@RequestBody Usuarios usuario) {
-        return usuarioRepository.save(usuario);
+    public Usuarios cadastrarUsuario(@RequestBody Usuarios usuario) {
+        
+        if (usuario.getTipo() != null && usuario.getTipo().getId() != null) {
+            
+            Optional<TipoUsuarios> tipoOptional = iTipoUsuario.findById(usuario.getTipo().getId());
+            if (tipoOptional.isPresent()) {
+                
+                usuario.setTipo(tipoOptional.get());
+            } else {
+                throw new RuntimeException("Tipo de usuário inválido!");
+            }
+        } else {
+            throw new RuntimeException("O tipo de usuário é obrigatório!");
+        }
+
+        
+        return iusuarios.save(usuario);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuarios> atualizarUsuario(@PathVariable Integer id, @RequestBody Usuarios usuarioAtualizado) {
-        return usuarioRepository.findById(id)
-                .map(usuario -> {
-                    usuario.setNome(usuarioAtualizado.getNome());
-                    usuario.setEmail(usuarioAtualizado.getEmail());
-                    usuario.setSenha(usuarioAtualizado.getSenha());
-                    usuario.setPassageiro(usuarioAtualizado.getPassageiro());
-                    usuario.setMotorista(usuarioAtualizado.getMotorista());
-                    Usuarios atualizado = usuarioRepository.save(usuario);
-                    return ResponseEntity.ok(atualizado);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+
+    @PutMapping
+    public Usuarios atualizarUsuario(@RequestBody Usuarios usuario) {
+        if (usuario.getTipo() != null && usuario.getTipo().getId() != null) {
+            Optional<TipoUsuarios> tipoOptional = iTipoUsuario.findById(usuario.getTipo().getId());
+            if (tipoOptional.isPresent()) {
+                usuario.setTipo(tipoOptional.get());
+            } else {
+                throw new RuntimeException("Tipo de usuário inválido!");
+            }
+        } else {
+            throw new RuntimeException("O tipo de usuário é obrigatório!");
+        }
+
+        return iusuarios.save(usuario);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Integer id) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+    public Optional<Usuarios> deletarUsuario(@PathVariable int id) {
+        Optional<Usuarios> usuario = iusuarios.findById(id);
+        if (usuario.isPresent()) {
+            iusuarios.deleteById(id);
         }
-        return ResponseEntity.notFound().build();
+        return usuario;
     }
 }

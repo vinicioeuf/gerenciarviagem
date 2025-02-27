@@ -11,8 +11,8 @@ public class Passagens {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuarios passageiro;
+    @JoinColumn(name = "passageiro_id", nullable = false)
+    private Passageiros passageiro;
 
     @ManyToOne
     @JoinColumn(name = "viagem_id", nullable = false)
@@ -26,16 +26,12 @@ public class Passagens {
         this.id = id;
     }
 
-    public Usuarios getPassageiro() {
+    public Passageiros getPassageiro() {
         return passageiro;
     }
 
-    public void setPassageiro(Usuarios passageiro) {
-        if (passageiro.getPassageiro() != null && passageiro.getPassageiro() == 1) {
-            this.passageiro = passageiro;
-        } else {
-            throw new IllegalArgumentException("O usuário deve ser um passageiro.");
-        }
+    public void setPassageiro(Passageiros passageiro) {
+        this.passageiro = passageiro;
     }
 
     public Viagens getViagem() {
